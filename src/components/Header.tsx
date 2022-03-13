@@ -7,7 +7,7 @@ const Nav = styled(motion.nav)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
+  position: fixed;
   width: 100%;
   top: 0;
   background-color: black;
@@ -82,7 +82,7 @@ const Input = styled(motion.input)`
 const logoVars = {
   normal: { fillOpacity: 1 },
   active: {
-    fillOpacity: [0, 1, 0],
+    fillOpacity: [1, 0, 1],
     transition: {
       repeat: Infinity,
     },
@@ -115,7 +115,7 @@ const Header = () => {
         navAnimation.start("top");
       }
     });
-  }, [navAnimation, scrollY]);
+  }, [scrollY, navAnimation]);
 
   const handleSearchOpen = () => {
     if (searchOpen) {
