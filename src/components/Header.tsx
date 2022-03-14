@@ -78,6 +78,7 @@ const Input = styled(motion.input)`
   background-color: transparent;
   border: none;
   border: 1px solid ${(props) => props.theme.white.lighter};
+  color: ${(props) => props.theme.white.lighter};
 `;
 
 const logoVars = {
@@ -105,7 +106,7 @@ interface IForm {
 
 const Header = () => {
   const [searchOpen, setSearchOpen] = useState(false);
-  const homeMatch = useMatch("/");
+  const movieMatch = useMatch("/");
   const tvMatch = useMatch("tv");
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
@@ -158,7 +159,9 @@ const Header = () => {
         </Logo>
         <Items>
           <Item>
-            <Link to={"/"}>Home {homeMatch && <Line layoutId="line" />}</Link>
+            <Link to={"/"}>
+              Movies {movieMatch && <Line layoutId="line" />}
+            </Link>
           </Item>
           <Item>
             <Link to={"tv"}>

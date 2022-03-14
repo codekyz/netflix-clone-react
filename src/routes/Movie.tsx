@@ -1,15 +1,15 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import {
-  getAiringTv,
-  getLatestTv,
-  getPopularTv,
-  getTopRatedTv,
-  IGetTvResult,
-  ITv,
+  getLatestMovie,
+  getNowPlayingMovies,
+  getTopReatedMovies,
+  getUpcomingMovies,
+  IGetMoviesResult,
+  IMovie,
 } from "../api/api";
 import { makeImagePath } from "../api/utilities";
-import TvSlider from "../components/TvSlider";
+import MovieSlider from "../components/MovieSlider";
 
 const Wrapper = styled.div`
   background-color: black;
@@ -59,48 +59,57 @@ const SectionTitle = styled.div`
   color: ${(props) => props.theme.white.lighter};
 `;
 
-const Tv = () => {
-  const latestTvShow = useQuery<ITv>(["tvShows", "latest"], getLatestTv);
-  const airingTv = useQuery<IGetTvResult>(["tvShows", "airing"], getAiringTv);
-  const PopularTv = useQuery<IGetTvResult>(
-    ["tvShows", "popular"],
-    getPopularTv
+const Movie = () => {
+  const latestMovie = useQuery<IMovie>(["movies", "latest"], getLatestMovie);
+  const nowPlayingMovies = useQuery<IGetMoviesResult>(
+    ["movies", "nowPlaying"],
+    getNowPlayingMovies
   );
-  const topRatedTv = useQuery<IGetTvResult>(
-    ["tvShows", "topRated"],
-    getTopRatedTv
+  const topRatedMovies = useQuery<IGetMoviesResult>(
+    ["movies", "topRated"],
+    getTopReatedMovies
+  );
+  const upcomingMovies = useQuery<IGetMoviesResult>(
+    ["movies", "upcoming"],
+    getUpcomingMovies
   );
 
   return (
     <Wrapper>
-      {latestTvShow.isLoading ? (
+      {latestMovie.isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
           <Banner
             bgphoto={makeImagePath(
-              latestTvShow.data?.backdrop_path
-                ? latestTvShow.data.backdrop_path
-                : latestTvShow.data?.poster_path || ""
+              latestMovie.data?.backdrop_path
+                ? latestMovie.data.backdrop_path
+                : latestMovie.data?.poster_path || ""
             )}
           >
-            <Title>{latestTvShow.data?.name}</Title>
-            <Overview>{latestTvShow.data?.overview}</Overview>
+            <Title>{latestMovie.data?.title}</Title>
+            <Overview>{latestMovie.data?.overview}</Overview>
           </Banner>
 
           <Section>
-            <SectionTitle>On the Air</SectionTitle>
-            {airingTv.data ? <TvSlider {...airingTv.data} /> : null}
-          </Section>
-
-          <Section>
-            <SectionTitle>Popular</SectionTitle>
-            {PopularTv.data ? <TvSlider {...PopularTv.data} /> : null}
+            <SectionTitle>Now Playing</SectionTitle>
+            {nowPlayingMovies.data ? (
+              <MovieSlider {...nowPlayingMovies.data} />
+            ) : null}
           </Section>
 
           <Section>
             <SectionTitle>Top Rated</SectionTitle>
-            {topRatedTv.data ? <TvSlider {...topRatedTv.data} /> : null}
+            {topRatedMovies.data ? (
+              <MovieSlider {...topRatedMovies.data} />
+            ) : null}
+          </Section>
+
+          <Section>
+            <SectionTitle>Upcoming</SectionTitle>
+            {upcomingMovies.data ? (
+              <MovieSlider {...upcomingMovies.data} />
+            ) : null}
           </Section>
         </>
       )}
@@ -108,4 +117,4 @@ const Tv = () => {
   );
 };
 
-export default Tv;
+export default Movie;
